@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -23,11 +24,10 @@ var UserCollection *mongo.Collection
 func ConnectDB() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatalf("some error occur in env", err)
+		log.Println("some error occur in env", err)
 	}
 
-	// dt  := os.Getenv("MONGODB_URI")
-	dt := "mongodb+srv://useless69xham:1234@newscluster.qw6qp.mongodb.net/?retryWrites=true&w=majority&appName=newsCluster"
+	dt := os.Getenv("MONGO_URI")
 	if dt != "" {
 		//todo make connection with mongo db here
 		connectionString := dt
@@ -51,7 +51,7 @@ func ConnectDB() {
 		// }()
 
 	} else {
-		panic("db is null")
+		panic("dt is null")
 	}
 
 }
