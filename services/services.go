@@ -15,14 +15,17 @@ func AddNews(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Allow-Control-Allow-Methods", "POST")
 	var news entitiy.NewsModels
 	_ = json.NewDecoder(r.Body).Decode(&news)
+	response := controllers.AddNews(news)
 	fmt.Print(news)
+	json.NewEncoder(w).Encode(response)
 }
 
 func DeleteNewsById(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Allow-Control-Allow-Methods", "DELETE")
 	params := mux.Vars(r)
-	controllers.DeleteNewsById(params["id"])
+	response := controllers.DeleteNewsById(params["newsId"])
+	json.NewEncoder(w).Encode(response)
 }
 
 func GetAllNews(w http.ResponseWriter, R *http.Request) {

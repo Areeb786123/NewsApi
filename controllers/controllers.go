@@ -10,15 +10,45 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func AddNews(entitiy.NewsModels) {
+func AddNews(news entitiy.NewsModels) entitiy.ResponseEntitity {
+	_, err := dbconnection.NewsCollection.InsertOne(context.Background(), news)
+	if err != nil {
+		return entitiy.ResponseEntitity{
+			Message: err.Error(),
+			Success: false,
+		}
+	}
 
+	return entitiy.ResponseEntitity{
+		Message: "post success",
+		Success: true,
+	}
 }
 
-func DeleteNewsById(newsId string) {
-
+func DeleteNewsById(newsId string) entitiy.ResponseEntitity {
+	id, err := primitive.ObjectIDFromHex(newsId)
+	if err != nil {
+		return entitiy.ResponseEntitity{
+			Message: err.Error(),
+			Success: false,
+		}
+	}
+	filter := bson.M{"_id": id}
+	_, err = dbconnection.NewsCollection.DeleteOne(context.Background(), filter)
+	if err != nil {
+		return entitiy.ResponseEntitity{
+			Message: err.Error(),
+			Success: false,
+		}
+	}
+	return entitiy.ResponseEntitity{
+		Message: "success",
+		Success: true,
+	}
 }
 
 func DeleteAllNews() {
+	//TODO will do it later 😅
 
 }
 
@@ -87,4 +117,8 @@ func GetNewsById(id string) entitiy.ResponseEntitity {
 		Success: true,
 		Message: "success",
 	}
+}
+
+func UploadLoadImage() {
+	//Todo here i will uplad upload image
 }
